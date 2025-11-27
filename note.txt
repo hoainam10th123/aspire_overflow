@@ -1,0 +1,67 @@
+toi 7.61
+
+https://learn.microsoft.com/en-us/dotnet/aspire/authentication/keycloak-integration?tabs=dotnet-cli
+
+var questionService = builder.AddProject<Projects.QuestionService>("question-svc")
+    .WithReference(keycloak).WaitFor(keycloak);// doi keycloak chay xong moi chay question service
+
+them 2 dong nay vao service webapi (program.cs) trong aspire
+builder.AddServiceDefaults();// dong nay
+app.MapDefaultEndpoints(); // dong nay
+
+
+dotnet add package Aspire.Keycloak.Authentication --version 9.5.2-preview.1.25522.3
+
+dotnet add package Aspire.Hosting.PostgreSQL --version 9.5.2
+
+dotnet add package Aspire.Npgsql.EntityFrameworkCore.PostgreSQL --version 9.5.2
+
+
+await db.Questions.Where(x=>x.Id == id)
+    .ExecuteUpdateAsync(setters => setters.SetProperty(x=> x.AnswerCount, x=>x.AnswerCount + 1));
+	
+tạo project api mới thì add vào apphost. sau đó add prọect service default vào web api
+
+dotnet user-secrets list
+
+thu muc appHost roi go cmd sau:
+dotnet user-secrets set Parameters:typesense-api-key "abc"
+
+https://bfritscher.github.io/typesense-dashboard/#/login
+
+
+dotnet add package Aspire.Hosting.RabbitMQ --version 9.5.2
+
+app.MapPost("/send", (IConnectionFactory factory) =>
+{
+    using var conn = factory.CreateConnection();
+    using var channel = conn.CreateModel();
+
+    channel.QueueDeclare("demo", durable: false, exclusive: false, autoDelete: false);
+
+    var body = Encoding.UTF8.GetBytes("Hello Aspire RabbitMQ");
+    channel.BasicPublish("", "demo", null, body);
+
+    return "Sent!";
+});
+
+
+https://learn.microsoft.com/en-us/aspnet/core/fundamentals/servers/yarp/getting-started?view=aspnetcore-10.0
+
+https://aspire.dev/integrations/reverse-proxies/yarp/
+
+https://learn.microsoft.com/en-us/dotnet/aspire/deployment/docker-integration?tabs=dotnet-cli
+
+dotnet tool install -g Aspire.Cli --prerelease
+
+aspire publish -o infra
+
+AUTH_KEYCLOAK_ID=postman
+AUTH_KEYCLOAK_SECRET=vAGG5J24NNINEnYgcm6nsMRN2swDXprt
+AUTH_KEYCLOAK_ISSUER=http://localhost:6001/realms/overflow
+
+host.docker.internal on MacOS and Windows
+172.17.0.1 on linux
+
+
+https://github.com/nginx-proxy/nginx-proxy
